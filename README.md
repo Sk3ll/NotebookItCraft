@@ -1,6 +1,7 @@
 # NotebookItCraft
 
-<h1>React Native Notebok</h1>
+Work at IT Craft (c) 2020
+Deadline 9.11.2020
 
 cheking in iOS
 
