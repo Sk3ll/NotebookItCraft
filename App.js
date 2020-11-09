@@ -91,12 +91,6 @@ const App: () => React$Node = () => {
 };
 
 const styles = StyleSheet.create({
-  screenTitle: {
-    height:40,
-    marginHorizontal: 16,
-    marginVertical: 12,
-    fontSize: 26
-  },
   search: {
     backgroundColor: '#efeeee',
     color: '#b2abad',
