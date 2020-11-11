@@ -8,7 +8,7 @@ import {
 import { useState, useEffect } from 'react';
 
 
-function AuthorItem ({title, email, itemId, nav}) {
+function AuthorItem ({title, email, itemId, navigation}) {
     const [listofPosts, setListofPosts] = useState('loading...');
     useEffect(() => {
         const ac = new AbortController();
@@ -52,7 +52,7 @@ function AuthorItem ({title, email, itemId, nav}) {
                 </View>
             </View>
             <TouchableOpacity
-                onPress={() => nav.navigate('Posts', {userId: itemId, userName: title})}
+                onPress={() => navigation.navigate('Posts', {userId: itemId, userName: title})}
             >
                 <Text style={styles.sectionPost}>{countedPosts()} posts &gt;</Text>
             </TouchableOpacity>

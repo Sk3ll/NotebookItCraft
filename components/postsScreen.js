@@ -1,15 +1,11 @@
-import React from 'react';
-import {
-    View,
-    Text,
-} from 'react-native';
-import { useState, useEffect } from 'react';
-
-import PostItem from './postItem'
-import { FlatList, TextInput } from 'react-native-gesture-handler';
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList} from 'react-native';
+import PostItem from './postItem';
+import Search from './search';
 
 function PostsScreen ({route, navigation}) {
-    const [listofPosts, setListofPosts] = useState('loading...');
+    const [listofPosts, setListofPosts] = useState([]);
+    const [filterList, setFilterList] = useState(currentPosts);
     const {userId, userName} = route.params;
     let currentPosts = [];
     useEffect(() => {
@@ -17,7 +13,13 @@ function PostsScreen ({route, navigation}) {
         fetch('https://jsonplaceholder.typicode.com/posts', {signal: ac.signal})
             .then((response) => response.json())
             .then((json) => {
-            setListofPosts(json);
+                for (let item of json) {
+                    if (userId === item.userId) {
+                        currentPosts.push(item);
+                    }
+                }
+                setListofPosts(currentPosts)
+                setFilterList(currentPosts)
             })
             .catch((error) => {
             console.error(error);
@@ -26,45 +28,23 @@ function PostsScreen ({route, navigation}) {
             ac.abort();
         }
     }, []);
-    const renderPosts = () => {
-        for (let item of listofPosts) {
-            if (userId === item.userId) {
-                currentPosts.push(item)
-            }
-        }
-    }
-    renderPosts()
+    
     return (
         <>  
             <View>
                 <Text style={{
                     backgroundColor: 'white',
                     paddingTop: 50,
+                    paddingBottom: 12,
                     paddingHorizontal: 12,
-
                     fontSize: 20,
                     fontWeight: '500'
                 }}>{userName}'s posts</Text>
             </View>
-            <View style={{backgroundColor: 'white'}}>
-                <TextInput
-                    style={{
-                            marginVertical: 12,
-                            backgroundColor: '#efeeee',
-                            color: '#b2abad',
-                            padding: 10,
-                            marginHorizontal: 16,
-                            fontSize: 24,
-                            borderRadius: 4,
-                            overflow: 'hidden'
-                    }}
-                    placeholder="&#128269; Search"
-                >
-                </TextInput>
-            </View>
+            <Search data={listofPosts} setData={setFilterList}></Search>
             <View style={{backgroundColor: 'white'}}>
                 <FlatList
-                    data={currentPosts}
+                    data={filterList}
                     keyExtractor={({ id }, index) => id.toString()}
                     renderItem={ ({item}) => (
                         <PostItem 
